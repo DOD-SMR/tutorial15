@@ -2,8 +2,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import axios from 'axios'
-
-export default function itemPaisProbabilidad({item}) {
+import { Probabilidad } from '../model/Tipos'
+type ItemPaisProbabilidadProps={
+    item : Probabilidad
+}
+export default function itemPaisProbabilidad({item}:ItemPaisProbabilidadProps) {
   return (
     <View style={styles.container}>
       <Image

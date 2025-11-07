@@ -2,10 +2,11 @@ import { Alert, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'r
 import React, { useState } from 'react'
 import { consultarProbabilidades } from './helpers/ConsultasApi'
 import itemPaisProbabilidad from './components/itemPaisProbabilidad'
+import { Probabilidad } from './model/Tipos'
 export default function App() {
-  const [nombre,setNombre] = useState("")
-  const [listaProbabilidades,setProbabilidades] = useState([])
-  function validarNombre(){
+  const [nombre,setNombre] = useState<string>("")
+  const [listaProbabilidades,setProbabilidades] = useState<Array<Probabilidad>>([])
+  function validarNombre():boolean{
     return nombre.trim() != ""
   }
   function botonPulsado(){
