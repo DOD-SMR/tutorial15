@@ -1,8 +1,11 @@
 import axios from "axios"
 import {Probabilidad} from "../model/Tipos"
 async function consultarProbabilidades(nombre:string):Promise<Array<Probabilidad>>{
-    const url = `https://api.nationalize.io/?name=${nombre}`
-    const respuestaServidor = await axios.get(url)
+    
+    const url = `https://api.nationalize.io/`
+    const params = {name:nombre}
+    const respuestaServidor = await axios.get(url,{params})
+    
     for (let objeto of respuestaServidor.data.country){
         objeto.pais = await (consultarNombrePais(objeto.country_id))
     }
