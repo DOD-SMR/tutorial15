@@ -3,17 +3,31 @@ import React, { useState } from 'react'
 import { consultarProbabilidades } from './helpers/ConsultasApi'
 import itemPaisProbabilidad from './components/itemPaisProbabilidad'
 import { Probabilidad } from './model/Tipos'
+import BienvenidaLayer from './components/layers/BienvenidaLayer'
+import CargaLayer from './components/layers/CargaLayer'
+import ResultadosLayer from './components/layers/ResultadosLayer'
 export default function App() {
   const [nombre,setNombre] = useState<string>("")
   const [listaProbabilidades,setProbabilidades] = useState<Array<Probabilidad>>([])
+  const [capaActiva, setCapaActiva] = useState(1)
+  
+  function getCapaActiva(){
+    return capaActiva === 1 ? <BienvenidaLayer/> :
+            capaActiva === 2 ? <CargaLayer/>:
+            capaActiva === 3 ? <ResultadosLayer listaProbabilidades={listaProbabilidades}/> :
+            <View/>
+  }
+  
   function validarNombre():boolean{
     return nombre.trim() != ""
   }
+  
   function botonPulsado(){
     if (validarNombre()){
+      setCapaActiva(2)
             consultarProbabilidades(nombre)
-                    .then( respuesta => setProbabilidades(respuesta))
-                    .catch(respuesta => console.log("Error",respuesta.toString()))
+                    .then( respuesta => {setProbabilidades(respuesta); setCapaActiva(3)})
+                    .catch(respuesta => {console.log("Error",respuesta.toString());setCapaActiva(1)})
 
     }else{
       
@@ -23,21 +37,25 @@ export default function App() {
   return (
     <View style={styles.contenedorPrincipal}>
           <View style={styles.fila}>
-            <TextInput style={styles.cuadroTexto} value={nombre}
+            <TextInput 
+            style={styles.cuadroTexto}
+            value={nombre}
             onChangeText={setNombre}
-            placeholder='Introduce tu nombre'/>
+            placeholder='Introduce tu nombre'
+            editable={capaActiva!==2}/>
+            
             <Pressable style={ ({pressed}) => 
-              pressed?styles.botonPresionado : styles.boton} onPress={botonPulsado}>
+              pressed?styles.botonPresionado : styles.boton} onPress={botonPulsado}
+              disabled={capaActiva!==2}>
               <Text style={styles.textoBoton}>Consultar</Text>
             </Pressable>
           </View>
-          <FlatList
-          data={listaProbabilidades}
-          renderItem={itemPaisProbabilidad}
-          keyExtractor={ item => item.country_id}
-          ListEmptyComponent={
-            () => <Text style={{margin:"auto"}}>No se han encontrado resultados</Text>
-          }/>
+          <View style={styles.contenedorCapas}>
+              {
+                getCapaActiva()
+              }
+          </View>
+          
     </View>
     
 
@@ -45,6 +63,9 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  contenedorCapas:{
+    flex:1
+  },
   fila:{
     flex:1,
     flexDirection:"row",
