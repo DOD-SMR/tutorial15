@@ -1,5 +1,5 @@
 import { Alert, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { consultarProbabilidades } from './helpers/ConsultasApi'
 import itemPaisProbabilidad from './components/itemPaisProbabilidad'
 import { Probabilidad } from './model/Tipos'
@@ -11,7 +11,7 @@ export default function App() {
   const [listaProbabilidades,setProbabilidades] = useState<Array<Probabilidad>>([])
   const [capaActiva, setCapaActiva] = useState(1)
   
-  function getCapaActiva(){
+  function getCapaActiva():ReactNode{
     return capaActiva === 1 ? <BienvenidaLayer/> :
             capaActiva === 2 ? <CargaLayer/>:
             capaActiva === 3 ? <ResultadosLayer listaProbabilidades={listaProbabilidades}/> :

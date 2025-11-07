@@ -1,8 +1,13 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import itemPaisProbabilidad from '../itemPaisProbabilidad'
+import { Probabilidad } from '../../model/Tipos'
 
-export default function ResultadosLayer({listaProbabilidades}) {
+type ListaProbabilidadesProps={
+    listaProbabilidades:Array<Probabilidad>
+}
+export default function ResultadosLayer({listaProbabilidades}:ListaProbabilidadesProps) {
+  
   return (
     <View>
       <FlatList
